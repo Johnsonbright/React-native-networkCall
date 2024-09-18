@@ -1,41 +1,44 @@
-import { ActivityIndicator, Button, StyleSheet, Text, View } from 'react-native'
+import { ActivityIndicator, Image, ScrollView, StyleSheet, Text, View } from 'react-native'
 import React, { useEffect, useState } from 'react'
 
 const App = () => {
-const [isLoading, setIsLoading] = useState(false)
-const [data, setData] = useState(null)
+const [isLoading, setIsLoading] = useState(false);
+const [product, setProduct] = useState([])
+
 
 useEffect(() => {
-  FetchData()
+  getAPIProduct()
 }, [])
 
-const FetchData = async() => {
+const getAPIProduct = async() => {
   setIsLoading(true)
-  const response = await fetch('https://jsonplaceholder.typicode.com/posts/1');
-
-  const data = await response.json();
- setData(data)
-   setIsLoading(false)
- 
+  const response = await fetch ("https://fakestoreapi.com/products")
+  const data = await response.json()
+  setProduct(data)
+  setIsLoading(false)
 }
 
   return (
-    <View>
+    <ScrollView>
+    { isLoading ? <ActivityIndicator size={50}/> : null }
 
-      {
-        isLoading? <ActivityIndicator size={100}/> : null
-      }
-      <Button title="Make API call" onPress={FetchData} />
-      {data ? (
-        <View>
-          <Text>Title- {data.title}</Text>
-          <Text>Body- {data.body}</Text>
+      { product.map(item => {
+      return(
+      <View key={item.id}>
+           <Image source={{uri: item.image}} style={{height: 300, resizeMode:'cover', padding:20, margin: 20,borderWidth:5, borderColor: 'black' }}/>
+          <Text style={styles.title}>{item.title}</Text>
+          <Text>{item.description}</Text>
         </View>
-      ): null}
-    </View>
+)})}
+    </ScrollView>
   )
 }
 
 export default App
 
-const styles = StyleSheet.create({})
+const styles = StyleSheet.create({
+  title: {
+    color: 'black',
+    fontSize: 20,
+  }
+})
