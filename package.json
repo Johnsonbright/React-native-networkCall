@@ -17,6 +17,7 @@
     "@reduxjs/toolkit": "^1.9.7",
     "@rneui/themed": "^4.0.0-rc.8",
     "axios": "^1.6.0",
+    "json-server": "^1.0.0-beta.2",
     "react": "18.2.0",
     "react-native": "0.72.6",
     "react-native-config": "^1.5.3",
